@@ -101,15 +101,11 @@ The above was our data, below in the upper part of the image, we see the negated
 ![](/assets/crypto.png)
 
 #### How do we get this result ?
-So as mentioned earlier, if we encountered a negative cycle.
+So if we encounter a negative cycle, we ensure that we record it and terminate the alghorithm as a presence of this could make it og until |V-1|, this is not necessary in our case as we found what we are looking for. We save the occurance of a cycle, as a seperate weighted digraph. 
+So as depicted below we create a new Weighted digraph, and iterate the current visited vertices in reverse order, as we know the cycle has just occured and probably is in the end, but worse case it could be the source node.
+Then we Provide it to a class that does a Depth First Search, and upon an edge that points to a previously visited vertex, we terminate search and record the path in a Stack, which represents the cycle.
+ 
+![](./assets/negativecycle.png)
 
-<!-- Complexity
-Relaxation - "efter V-1 iterationer, kører den checket efter negative cycles igen. .. undersøg nærmere
 
-resultat
-
-Reflection (what we could have used)
-
-- Floyd warshall
-
-- Johnson something -->
+A DFS search is in best case O(|V|+|E|) and in worst case O(|V|), in our case we are certain that a cycle exists thus we would always expect best case scenario.
