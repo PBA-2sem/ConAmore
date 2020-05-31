@@ -50,7 +50,6 @@ Relaxation - "efter V-1 iterationer, kører den checket efter negative cycles ig
 
 resultat
 
-
 Reflection (what we could have used)
 
 - Floyd warshall
