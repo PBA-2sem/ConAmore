@@ -1,13 +1,11 @@
 package datastructures;
 
-import datastructures.Stack;
-
 public class EdgeWeightedDirectedCycle {
     private boolean[] marked;             // marked[v] = has vertex v been marked?
     private DirectedEdge[] edgeTo;        // edgeTo[v] = previous edge on path to v
     private boolean[] onStack;            // onStack[v] = is vertex on the stack?
     private Stack<DirectedEdge> cycle;    // directed cycle (or null if no such cycle)
-
+    private int count = 0;
     /**
      * Determines whether the edge-weighted digraph {@code G} has a directed cycle and,
      * if so, finds such a cycle.
@@ -17,6 +15,8 @@ public class EdgeWeightedDirectedCycle {
         marked  = new boolean[G.V()];
         onStack = new boolean[G.V()];
         edgeTo  = new DirectedEdge[G.V()];
+        
+        // We get the graph from the findNegativeCycle method reversed so we know the cycle is present in the beginning here.
         for (int v = 0; v < G.V(); v++)
             if (!marked[v]) dfs(G, v);
 
@@ -26,8 +26,10 @@ public class EdgeWeightedDirectedCycle {
 
     // check that algorithm computes either the topological order or finds a directed cycle
     private void dfs(EdgeWeightedDigraph G, int v) {
-        onStack[v] = true;
-        marked[v] = true;
+        onStack[v] = true; // we add the vertex to the stack
+        marked[v] = true; // we mark the vertex as visited
+        
+        
         for (DirectedEdge e : G.adj(v)) {
             int w = e.to();
 

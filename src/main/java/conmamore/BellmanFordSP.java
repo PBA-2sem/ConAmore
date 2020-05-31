@@ -19,7 +19,7 @@ public class BellmanFordSP {
      * Computes a shortest paths tree from {@code s} to every other vertex in
      * the edge-weighted digraph {@code G}.
      * @param G the acyclic digraph
-     * @param s the source vertex
+     * @param source the source vertex
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
      */
     public BellmanFordSP(EdgeWeightedDigraph G, int source) {
@@ -82,8 +82,11 @@ public class BellmanFordSP {
 
     // by finding a cycle in predecessor graph
     private void findNegativeCycle() {
+        // We start iterating the array from the last node and then traverse it backwards.
+        // We know that the cycle is in connection to the last vertex iteration.
         int V = lastEdgeOnShortestPathTo.length;
         EdgeWeightedDigraph spt = new EdgeWeightedDigraph(V);
+        
         for (int vertex = 0; vertex < V; vertex++)
             if (lastEdgeOnShortestPathTo[vertex] != null)
                 spt.addEdge(lastEdgeOnShortestPathTo[vertex]);
@@ -94,7 +97,7 @@ public class BellmanFordSP {
 
     /**
      * Returns the length of a shortest path from the source vertex {@code s} to vertex {@code v}.
-     * @param  v the destination vertex
+     * @param  vertex the destination vertex
      * @return the length of a shortest path from the source vertex {@code s} to vertex {@code v};
      *         {@code Double.POSITIVE_INFINITY} if no such path
      * @throws UnsupportedOperationException if there is a negative cost cycle reachable
@@ -109,7 +112,7 @@ public class BellmanFordSP {
 
     /**
      * Is there a path from the source {@code s} to vertex {@code v}?
-     * @param  v the destination vertex
+     * @param  vertex the destination vertex
      * @return {@code true} if there is a path from the source vertex
      *         {@code s} to vertex {@code v}, and {@code false} otherwise
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
@@ -120,7 +123,7 @@ public class BellmanFordSP {
 
     /**
      * Returns a shortest path from the source {@code s} to vertex {@code v}.
-     * @param  v the destination vertex
+     * @param  vertex the destination vertex
      * @return a shortest path from the source {@code s} to vertex {@code v}
      *         as an iterable of edges, and {@code null} if no such path
      * @throws UnsupportedOperationException if there is a negative cost cycle reachable
