@@ -1,14 +1,20 @@
 ## Introduction
-The purpose of the Con Amore assignment is to find a problem we would like to solve, with our knowledge about data structures and algorithms that we have acquired in the Algorithm and Datastructes course this semester.
+The purpose of the Con Amore assignment is to find a problem we would like to solve, with our knowledge about data structures and algorithms, that we have acquired in the Algorithm and Datastructes course this semester.
 
 ## Process
 We were interested in trying to apply our knowledge about the topic shortest paths, to see if we could use it to find a solution to a "real life" problem, with the help of data in a graph-like structure.
 
 There are many shortest path algorithms, and we wanted to learn about one we didnt know about already. Our investigation lead us to find the [Bellman Ford algorithm](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm), an algorithm similar to Dijkstras algortihm, but is able to handle graphs in which some of the edge weights are negative numbers, by finding negative cycles.
 
-We found out that this is quite useful in a scenario were you want to detect [Arbitrage](https://en.wikipedia.org/wiki/Arbitrage).
+We found out that this is quite useful to use in a scenario were you want to detect [Arbitrage](https://en.wikipedia.org/wiki/Arbitrage).
 
-We then found out, that to be able to detect arbitrage within data in a graph structure, one need to be able to locate *negative cycles* in the graph. Dijkstra's algorithm is unable to handle negative cycles as it only vists every vertice once (only one iteration in Dijkstra). It is actually able to handle negative weights, however, it will not choose the shortest path in this case since it is a greedy algorithm.
+We then found out, that to be able to detect arbitrage within data in a graph structure, one need to be able to locate *negative cycles* in the graph. 
+
+Negative cycles is when the sum of all weights in a cycle is negative. This might sound contradicting towards profitting off of it, but this is where we replace each weight by its logarithm, negated. So when the total sum of the weights are negative, we actually make money off of it. 
+
+
+
+Dijkstra's algorithm is unable to handle negative cycles as it only vists every vertice once (only one iteration in Dijkstra). It is actually able to handle negative weights, however, it will not choose the shortest path in this case since it is a greedy algorithm.
 
 ![Dijkstra's algorithm](/assets/dijkstra.PNG)
 
@@ -18,7 +24,6 @@ With Dijkstra, if we have to find the shortest path from A --> C, Dijkstra will 
 
 Luckily, Bellman-Ford algorithm is a graph algorithm that can be used to  detect negative weight cycles in O(|V||E|) time complexity, and O(|V|) space complexity.
 
-Negative cycles is when the sum of all weights in a cycle is negative. This might sound contradicting towards profitting off of it, but this is where we replace each weight by its logarithm, negated. So when the total sum of the weights are negative, we actually make money off of it. 
 
 Example: 
 
