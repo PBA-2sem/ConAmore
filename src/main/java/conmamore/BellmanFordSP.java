@@ -44,7 +44,7 @@ public class BellmanFordSP {
 
     }
 
-    // relax vertex v and put other endpoints on queue if changed
+    // relax vertex v and put other endpoints on queue if changed 
     private void relax(EdgeWeightedDigraph G, int v) {
         for (DirectedEdge e : G.adj(v)) {
             int w = e.to();

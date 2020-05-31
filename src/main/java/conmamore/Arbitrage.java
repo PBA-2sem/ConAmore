@@ -71,17 +71,19 @@ public class Arbitrage {
             for (int w = 0; w < V; w++) {
                 double rate = StdIn.readDouble();
                 System.out.println("RATE: " + rate);
+                System.out.println("LOG RATE: " + (-Math.log(rate)));
                 DirectedEdge e = new DirectedEdge(v, w, -Math.log(rate));
                 G.addEdge(e);
             }
         }
 
+        
+        System.out.println(G.toString());
+        
         // find negative cycle
         BellmanFordSP spt = new BellmanFordSP(G, 0);
         
-          for (DirectedEdge e : spt.negativeCycle())
-                StdOut.println(e);
-          
+         
         if (spt.hasNegativeCycle()) {
             double stake = 1000.0;
             for (DirectedEdge e : spt.negativeCycle()) {
