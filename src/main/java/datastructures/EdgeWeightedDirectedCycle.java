@@ -16,7 +16,7 @@ public class EdgeWeightedDirectedCycle {
         onStack = new boolean[G.V()];
         edgeTo  = new DirectedEdge[G.V()];
         
-        // We get the graph from the findNegativeCycle method reversed so we know the cycle is present in the beginning here.
+        // We get the graph from the findNegativeCycle method with a present cycle found by Bellman-Ford
         for (int v = 0; v < G.V(); v++)
             if (!marked[v]) dfs(G, v);
     }

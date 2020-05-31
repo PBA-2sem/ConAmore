@@ -82,7 +82,6 @@ public class BellmanFordSP {
 
     // by finding a cycle in predecessor graph
     private void findNegativeCycle() {
-        // We start iterating the array from the last node and then traverse it backwards.
         // We know that the cycle is in connection to the last vertex iteration.
         int V = lastEdgeOnShortestPathTo.length;
         EdgeWeightedDigraph spt = new EdgeWeightedDigraph(V);

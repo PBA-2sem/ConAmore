@@ -107,6 +107,6 @@ So if we encounter a negative cycle, we ensure that we record it and terminate t
 
 
 Then we Provide it to a class that does a Depth First Search, and upon an edge that points to a previously visited vertex, we terminate search and record the path in a Stack, which represents the cycle.
-A DFS search is in best case O(|V|+|E|) and in worst case O(|V|), in our case we are certain that a cycle exists thus we would always expect best case scenario.
+A DFS searches worst case time complexity is O(|V|+|E|) and space complexity O(|V|).
 
 ![](./assets/dfs.png)
