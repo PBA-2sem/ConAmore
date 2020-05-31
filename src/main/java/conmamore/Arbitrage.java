@@ -83,21 +83,18 @@ public class Arbitrage {
         // find negative cycle
         BellmanFordSP spt = new BellmanFordSP(G, 0);
         
-         
+
         if (spt.hasNegativeCycle()) {
             double stake = 1000.0;
-            for (DirectedEdge e : spt.negativeCycle()) {
-                StdOut.printf("%10.5f %s ", stake, name[e.from()]);
-                stake *= Math.exp(-e.weight());
-                StdOut.printf("= %10.5f %s\n", stake, name[e.to()]);
+            for (DirectedEdge edge : spt.negativeCycle()) {
+                StdOut.printf("%10.5f %s ", stake, name[edge.from()]);
+                stake *= Math.exp(-edge.weight());
+                StdOut.printf("= %10.5f %s\n", stake, name[edge.to()]);
             }
         }
         else {
             StdOut.println("No arbitrage opportunity");
-        }
-        
-        
-        
+        } 
     }
 }
 
