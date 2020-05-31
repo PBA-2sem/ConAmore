@@ -103,10 +103,10 @@ public class BellmanFordSP {
      *         from the source vertex {@code s}
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
-    public double shortestPathTo(int v) {
+    public double shortestPathTo(int vertex) {
         if (hasNegativeCycle())
             throw new UnsupportedOperationException("Negative cost cycle exists");
-        return shortestPathTo[v];
+        return shortestPathTo[vertex];
     }
 
     /**
