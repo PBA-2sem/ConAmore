@@ -134,8 +134,8 @@ public class BellmanFordSP {
             throw new UnsupportedOperationException("Negative cost cycle exists");
         if (!hasPathTo(vertex)) return null;
         Stack<DirectedEdge> path = new Stack<DirectedEdge>();
-        for (DirectedEdge e = lastEdgeOnShortestPathTo[vertex]; e != null; e = lastEdgeOnShortestPathTo[e.from()]) {
-            path.push(e);
+        for (DirectedEdge edge = lastEdgeOnShortestPathTo[vertex]; edge != null; edge = lastEdgeOnShortestPathTo[edge.from()]) {
+            path.push(edge);
         }
         return path;
     }
