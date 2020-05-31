@@ -10,12 +10,12 @@ import utils.StdOut;
 
 public class BellmanFordSP {
     
-    private double[] distTo;               // distTo[v] = distance  of shortest s->v path
-    private DirectedEdge[] edgeTo;         // edgeTo[v] = last edge on shortest s->v path
-    private boolean[] onQueue;             // onQueue[v] = is v currently on the queue?
-    private Queue<Integer> queue;          // queue of vertices to relax
-    private int cost;                      // number of calls to relax()
-    private Iterable<DirectedEdge> cycle;  // negative cycle (or null if no such cycle)
+    private double[] shortestPathTo;                  // shortestPathTo[v] = distance  of shortest s->v path
+    private DirectedEdge[] lastEdgeOnShortestPathTo;  // lastEdgeOnShortestPathTo[v] = last edge on shortest s->v path
+    private boolean[] verticesOnQueue;                // verticesOnQueue[v] = is v currently on the verticesQueue?
+    private Queue<Integer> verticesQueue;              // verticesQueue of vertices to relax
+    private int cost;                                 // number of calls to relax()
+    private Iterable<DirectedEdge> cycle;             // negative cycle (or null if no such cycle)
 
     /**
      * Computes a shortest paths tree from {@code s} to every other vertex in
@@ -24,36 +24,36 @@ public class BellmanFordSP {
      * @param s the source vertex
      * @throws IllegalArgumentException unless {@code 0 <= s < V}
      */
-    public BellmanFordSP(EdgeWeightedDigraph G, int s) {
-        distTo  = new double[G.V()];
-        edgeTo  = new DirectedEdge[G.V()];
-        onQueue = new boolean[G.V()];
+    public BellmanFordSP(EdgeWeightedDigraph G, int source) {
+        shortestPathTo  = new double[G.V()];
+        lastEdgeOnShortestPathTo  = new DirectedEdge[G.V()];
+        verticesOnQueue = new boolean[G.V()];
         for (int v = 0; v < G.V(); v++)
-            distTo[v] = Double.POSITIVE_INFINITY;
-        distTo[s] = 0.0;
+            shortestPathTo[v] = Double.POSITIVE_INFINITY;
+        shortestPathTo[source] = 0.0;
 
         // Bellman-Ford algorithm
-        queue = new Queue<Integer>();
-        queue.enqueue(s);
-        onQueue[s] = true;
-        while (!queue.isEmpty() && !hasNegativeCycle()) {
-            int v = queue.dequeue();
-            onQueue[v] = false;
-            relax(G, v);
+        verticesQueue = new Queue<Integer>();
+        verticesQueue.enqueue(source);
+        verticesOnQueue[source] = true;
+        while (!verticesQueue.isEmpty() && !hasNegativeCycle()) {
+            int vertex = verticesQueue.dequeue();
+            verticesOnQueue[vertex] = false;
+            relax(G, vertex);
         }
 
     }
 
-    // relax vertex v and put other endpoints on queue if changed
-    private void relax(EdgeWeightedDigraph G, int v) {
-        for (DirectedEdge e : G.adj(v)) {
-            int w = e.to();
-            if (distTo[w] > distTo[v] + e.weight()) {
-                distTo[w] = distTo[v] + e.weight();
-                edgeTo[w] = e;
-                if (!onQueue[w]) {
-                    queue.enqueue(w);
-                    onQueue[w] = true;
+    // relax vertex v and put other endpoints on verticesQueue if changed
+    private void relax(EdgeWeightedDigraph G, int source) {
+        for (DirectedEdge directedEdge : G.adj(source)) {
+            int destination = directedEdge.to();
+            if (shortestPathTo[destination] > shortestPathTo[source] + directedEdge.weight()) {
+                shortestPathTo[destination] = shortestPathTo[source] + directedEdge.weight();
+                lastEdgeOnShortestPathTo[destination] = directedEdge;
+                if (!verticesOnQueue[destination]) {
+                    verticesQueue.enqueue(destination);
+                    verticesOnQueue[destination] = true;
                 }
             }
             if (++cost % G.V() == 0) {
@@ -84,11 +84,11 @@ public class BellmanFordSP {
 
     // by finding a cycle in predecessor graph
     private void findNegativeCycle() {
-        int V = edgeTo.length;
+        int V = lastEdgeOnShortestPathTo.length;
         EdgeWeightedDigraph spt = new EdgeWeightedDigraph(V);
-        for (int v = 0; v < V; v++)
-            if (edgeTo[v] != null)
-                spt.addEdge(edgeTo[v]);
+        for (int vertex = 0; vertex < V; vertex++)
+            if (lastEdgeOnShortestPathTo[vertex] != null)
+                spt.addEdge(lastEdgeOnShortestPathTo[vertex]);
 
         EdgeWeightedDirectedCycle finder = new EdgeWeightedDirectedCycle(spt);
         cycle = finder.cycle();
@@ -103,10 +103,10 @@ public class BellmanFordSP {
      *         from the source vertex {@code s}
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
-    public double distTo(int v) {
+    public double shortestPathTo(int v) {
         if (hasNegativeCycle())
             throw new UnsupportedOperationException("Negative cost cycle exists");
-        return distTo[v];
+        return shortestPathTo[v];
     }
 
     /**
@@ -116,8 +116,8 @@ public class BellmanFordSP {
      *         {@code s} to vertex {@code v}, and {@code false} otherwise
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
-    public boolean hasPathTo(int v) {
-        return distTo[v] < Double.POSITIVE_INFINITY;
+    public boolean hasPathTo(int vertex) {
+        return shortestPathTo[vertex] < Double.POSITIVE_INFINITY;
     }
 
     /**
@@ -129,52 +129,14 @@ public class BellmanFordSP {
      *         from the source vertex {@code s}
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
-    public Iterable<DirectedEdge> pathTo(int v) {
+    public Iterable<DirectedEdge> pathTo(int vertex) {
         if (hasNegativeCycle())
             throw new UnsupportedOperationException("Negative cost cycle exists");
-        if (!hasPathTo(v)) return null;
+        if (!hasPathTo(vertex)) return null;
         Stack<DirectedEdge> path = new Stack<DirectedEdge>();
-        for (DirectedEdge e = edgeTo[v]; e != null; e = edgeTo[e.from()]) {
+        for (DirectedEdge e = lastEdgeOnShortestPathTo[vertex]; e != null; e = lastEdgeOnShortestPathTo[e.from()]) {
             path.push(e);
         }
         return path;
     }
-
-
-    /**
-     * Unit tests the {@code BellmanFordSP} data type.
-     *
-     * @param args the command-line arguments
-     */
-    public static void main(String[] args) {
-        In in = new In(args[0]);
-        int s = Integer.parseInt(args[1]);
-        EdgeWeightedDigraph G = new EdgeWeightedDigraph(in);
-
-        BellmanFordSP sp = new BellmanFordSP(G, s);
-
-        // print negative cycle
-        if (sp.hasNegativeCycle()) {
-            for (DirectedEdge e : sp.negativeCycle())
-                StdOut.println(e);
-        }
-
-        // print shortest paths
-        else {
-            for (int v = 0; v < G.V(); v++) {
-                if (sp.hasPathTo(v)) {
-                    StdOut.printf("%d to %d (%5.2f)  ", s, v, sp.distTo(v));
-                    for (DirectedEdge e : sp.pathTo(v)) {
-                        StdOut.print(e + "   ");
-                    }
-                    StdOut.println();
-                }
-                else {
-                    StdOut.printf("%d to %d           no path\n", s, v);
-                }
-            }
-        }
-
-    }
-
 }
