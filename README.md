@@ -45,7 +45,7 @@ The alghorithm is significantly slower than Dijkstra, but this is outweight by i
 #### Why can Dijkstra's alghorithm not handle negative numbers ?
 Dijkstra's algorithm is unable to handle negative cycles as it only vists every vertice once (only one iteration in Dijkstra). It is actually able to handle negative weights, however, it will not choose the shortest path in this case since it is a greedy algorithm.
 
-![Dijkstra's algorithm](/assets/dijkstra.PNG)
+![Dijkstra's algorithm](/assets/dijkstra.png)
 
 With Dijkstra, if we have to find the shortest path from A --> C, Dijkstra will be greedy and just choose the direct path from A -- C. Dijkstra is not meant to deal with negative weights, and does therfore not expect the path to be reduced because of negative weights.
 
@@ -101,7 +101,7 @@ The above was our data, below in the upper part of the image, we see the negated
 ![](/assets/crypto.png)
 
 #### How do we get this result ?
-So as mentioned earlier, if we encountered a negative cycle, we would then recreate the cycle in a weighted digraph.
+So as mentioned earlier, if we encountered a negative cycle.
 
 <!-- Complexity
 Relaxation - "efter V-1 iterationer, kører den checket efter negative cycles igen. .. undersøg nærmere
