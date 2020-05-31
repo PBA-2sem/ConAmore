@@ -1,5 +1,8 @@
-package conmamore;
+package datastructures;
 
+import datastructures.Bag;
+import datastructures.Stack;
+import utils.In;
 import java.util.NoSuchElementException;
 
 public class EdgeWeightedDigraph {
@@ -221,17 +224,6 @@ public class EdgeWeightedDigraph {
             s.append(NEWLINE);
         }
         return s.toString();
-    }
-
-    /**
-     * Unit tests the {@code EdgeWeightedDigraph} data type.
-     *
-     * @param args the command-line arguments
-     */
-    public static void main(String[] args) {
-        In in = new In(args[0]);
-        EdgeWeightedDigraph G = new EdgeWeightedDigraph(in);
-        StdOut.println(G);
     }
 
 }

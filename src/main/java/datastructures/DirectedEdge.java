@@ -1,4 +1,4 @@
-package conmamore;
+package datastructures;
 
 public class DirectedEdge { 
     private final int v;
@@ -56,13 +56,4 @@ public class DirectedEdge {
         return v + "->" + w + " " + String.format("%5.2f", weight);
     }
 
-    /**
-     * Unit tests the {@code DirectedEdge} data type.
-     *
-     * @param args the command-line arguments
-     */
-    public static void main(String[] args) {
-        DirectedEdge e = new DirectedEdge(12, 34, 5.67);
-        StdOut.println(e);
-    }
 }

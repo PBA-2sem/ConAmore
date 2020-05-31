@@ -5,6 +5,11 @@
  */
 package conmamore;
 
+import datastructures.EdgeWeightedDigraph;
+import datastructures.DirectedEdge;
+import utils.StdIn;
+import utils.StdOut;
+
 /******************************************************************************
  *  Compilation:  javac Arbitrage.java
  *  Execution:    java Arbitrage < input.txt
@@ -30,6 +35,18 @@ package conmamore;
  ******************************************************************************/
 
 public class Arbitrage {
+    
+    
+    
+/**
+ *       BTC     LTC    ETH   BCH
+ * 4
+
+    BTC  1       203.79  40    39
+    LTC  0.0049  1       0.2   0.195
+    ETH  0.025   5       1     0.975
+    BCH  0.02562 5.125   1.025 1
+ */
 
     // this class cannot be instantiated
     private Arbitrage() { }
@@ -50,8 +67,10 @@ public class Arbitrage {
         EdgeWeightedDigraph G = new EdgeWeightedDigraph(V);
         for (int v = 0; v < V; v++) {
             name[v] = StdIn.readString();
+            System.out.print(name[v] +" ");
             for (int w = 0; w < V; w++) {
                 double rate = StdIn.readDouble();
+                System.out.println("RATE: " + rate);
                 DirectedEdge e = new DirectedEdge(v, w, -Math.log(rate));
                 G.addEdge(e);
             }
@@ -59,6 +78,10 @@ public class Arbitrage {
 
         // find negative cycle
         BellmanFordSP spt = new BellmanFordSP(G, 0);
+        
+          for (DirectedEdge e : spt.negativeCycle())
+                StdOut.println(e);
+          
         if (spt.hasNegativeCycle()) {
             double stake = 1000.0;
             for (DirectedEdge e : spt.negativeCycle()) {
@@ -70,6 +93,9 @@ public class Arbitrage {
         else {
             StdOut.println("No arbitrage opportunity");
         }
+        
+        
+        
     }
 }
 
