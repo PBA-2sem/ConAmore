@@ -101,7 +101,7 @@ The above was our data, below in the upper part of the image, we see the negated
 ![](/assets/crypto.png)
 
 #### How do we get this result ?
-So if we encounter a negative cycle, we ensure that we record it and terminate the alghorithm as a presence of this could make the alghorithm continue util |V-1|, this is not necessary in our case as we found what we are looking for. We save the occurance of a cycle, (*Lines 88-92 in image below*) creating a new weighted digraph, and iterate the current visited vertices in reverse order, as we know the cycle has just occured and probably is in the end, though in worse case it could be the source node.
+So if we encounter a negative cycle, we ensure that we record it and terminate the alghorithm as a presence of this could make the alghorithm continue util |V-1|, this is not necessary in our case as we found what we are looking for. We save the occurance of a cycle, (*Lines 88-92 in image below*) creating a new weighted digraph, and iterate the current visited vertices.
  
 ![](./assets/negativecycle.png)
 
