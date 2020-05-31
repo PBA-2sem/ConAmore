@@ -1,5 +1,13 @@
 package conmamore;
 
+import datastructures.EdgeWeightedDigraph;
+import datastructures.DirectedEdge;
+import datastructures.EdgeWeightedDirectedCycle;
+import datastructures.Stack;
+import datastructures.Queue;
+import utils.In;
+import utils.StdOut;
+
 public class BellmanFordSP {
     
     private double[] distTo;               // distTo[v] = distance  of shortest s->v path
@@ -34,7 +42,6 @@ public class BellmanFordSP {
             relax(G, v);
         }
 
-        assert check(G, s);
     }
 
     // relax vertex v and put other endpoints on queue if changed
@@ -97,7 +104,6 @@ public class BellmanFordSP {
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
     public double distTo(int v) {
-        validateVertex(v);
         if (hasNegativeCycle())
             throw new UnsupportedOperationException("Negative cost cycle exists");
         return distTo[v];
@@ -111,7 +117,6 @@ public class BellmanFordSP {
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
     public boolean hasPathTo(int v) {
-        validateVertex(v);
         return distTo[v] < Double.POSITIVE_INFINITY;
     }
 
@@ -125,7 +130,6 @@ public class BellmanFordSP {
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
     public Iterable<DirectedEdge> pathTo(int v) {
-        validateVertex(v);
         if (hasNegativeCycle())
             throw new UnsupportedOperationException("Negative cost cycle exists");
         if (!hasPathTo(v)) return null;
@@ -136,76 +140,6 @@ public class BellmanFordSP {
         return path;
     }
 
-    // check optimality conditions: either 
-    // (i) there exists a negative cycle reacheable from s
-    //     or 
-    // (ii)  for all edges e = v->w:            distTo[w] <= distTo[v] + e.weight()
-    // (ii') for all edges e = v->w on the SPT: distTo[w] == distTo[v] + e.weight()
-    private boolean check(EdgeWeightedDigraph G, int s) {
-
-        // has a negative cycle
-        if (hasNegativeCycle()) {
-            double weight = 0.0;
-            for (DirectedEdge e : negativeCycle()) {
-                weight += e.weight();
-            }
-            if (weight >= 0.0) {
-                System.err.println("error: weight of negative cycle = " + weight);
-                return false;
-            }
-        }
-
-        // no negative cycle reachable from source
-        else {
-
-            // check that distTo[v] and edgeTo[v] are consistent
-            if (distTo[s] != 0.0 || edgeTo[s] != null) {
-                System.err.println("distanceTo[s] and edgeTo[s] inconsistent");
-                return false;
-            }
-            for (int v = 0; v < G.V(); v++) {
-                if (v == s) continue;
-                if (edgeTo[v] == null && distTo[v] != Double.POSITIVE_INFINITY) {
-                    System.err.println("distTo[] and edgeTo[] inconsistent");
-                    return false;
-                }
-            }
-
-            // check that all edges e = v->w satisfy distTo[w] <= distTo[v] + e.weight()
-            for (int v = 0; v < G.V(); v++) {
-                for (DirectedEdge e : G.adj(v)) {
-                    int w = e.to();
-                    if (distTo[v] + e.weight() < distTo[w]) {
-                        System.err.println("edge " + e + " not relaxed");
-                        return false;
-                    }
-                }
-            }
-
-            // check that all edges e = v->w on SPT satisfy distTo[w] == distTo[v] + e.weight()
-            for (int w = 0; w < G.V(); w++) {
-                if (edgeTo[w] == null) continue;
-                DirectedEdge e = edgeTo[w];
-                int v = e.from();
-                if (w != e.to()) return false;
-                if (distTo[v] + e.weight() != distTo[w]) {
-                    System.err.println("edge " + e + " on shortest path not tight");
-                    return false;
-                }
-            }
-        }
-
-        StdOut.println("Satisfies optimality conditions");
-        StdOut.println();
-        return true;
-    }
-
-    // throw an IllegalArgumentException unless {@code 0 <= v < V}
-    private void validateVertex(int v) {
-        int V = distTo.length;
-        if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
-    }
 
     /**
      * Unit tests the {@code BellmanFordSP} data type.
