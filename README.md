@@ -12,23 +12,39 @@ We then found out, that to be able to detect arbitrage within data in a graph st
 
 ![Dijkstra's algorithm](/assets/dijkstra.PNG)
 
-With Dijkstra, if we have to find the shortest path from A --> C, Dijkstra will be greedy and just choose the direct path from A -- C. Dijkstra is not meant to deal with negative weights, and does therfore not expect the path to be reduced because of negative weights. 
+With Dijkstra, if we have to find the shortest path from A --> C, Dijkstra will be greedy and just choose the direct path from A -- C. Dijkstra is not meant to deal with negative weights, and does therfore not expect the path to be reduced because of negative weights.
 
-Luckily, Bellman-Ford algorithm is a standard graph algorithm that can be used to easily detect negative weight cycles in O(|V*E|) time.
+## Bellman-Ford
 
-Negative cycles is when the sum of all weights in a cycle is negative. This might sound contradicting towards profitting off of it, but this is where we replace each weight by its logarithm, negated. So when the total sum of the weights are negative, we actually make money off of it. Example: 
+Luckily, Bellman-Ford algorithm is a graph algorithm that can be used to  detect negative weight cycles in O(|V||E|) time complexity, and O(|V|) space complexity.
 
-![Dijkstra's algorithm](/assets/Arbitrage.PNG)
+Negative cycles is when the sum of all weights in a cycle is negative. This might sound contradicting towards profitting off of it, but this is where we replace each weight by its logarithm, negated. So when the total sum of the weights are negative, we actually make money off of it. 
 
-This shows an arbitrage opportunity in a graph, and this is exactly what Bellman Ford detects by finding the negative cycle. Here, the conversion rate between each currency has been converted to the rates logarithm, negated. SHOW CODE
+Example: 
 
-We then began to think about what data we wanted to process, to seach for shortest paths in. 
+![Arbitrage](/assets/Arbitrage.PNG)
 
-## Topic of Interest
+This shows an arbitrage opportunity in a graph, and this is exactly what Bellman Ford detects, by finding the negative cycle. Here, the conversion rate between each currency has been converted to the negated logarithm of the rates. 
 
-We wanted to see if it was possible to make money, simply by investigating **crypto currency exchange rates**. Our first idea was to use Dijkstra's algorithm to find scenarios, where the coversion rate between currencies would net us a profit, however small. 
+```
+int V = amountOfVertices;
 
-## Data: Binance Crypto Trading Exchange Data
+        EdgeWeightedDigraph G = new EdgeWeightedDigraph(V);
+        for (int sourceVertice = 0; vertice < V; v++) {
+
+            for (int targetVertice = 0; targetVertice < V; targetVertice++) {
+                double rate = weightOfEdge;
+                DirectedEdge e = new DirectedEdge(sourceVertice, targetVertice, -Math.log(rate));
+                G.addEdge(e);
+            }
+        }
+```
+
+
+
+<!-- Relaxation -->
+
+...
 
 We wanted to see if we could find some real data, to see if the algorithmic logic was applicable to real life data. 
 
@@ -42,6 +58,7 @@ We found some **crypto trading exchange data**, on [Binance](https://en.wikipedi
 | **LTC** |   0.0049 |  1 | 0.2 | 0.195| 
 | **ETH** |   0.025 |   5 |       1  |    0.975| 
 | **BCH** |   0.02562 |  5.125 |   1.025 |  1| 
+
 
 ---
 
