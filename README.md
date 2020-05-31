@@ -15,19 +15,32 @@ Looking around we have found an interesting application, of the alghoritm in a a
 Bellman-Ford is a graph algorithm that similary to Djikstra can be used to find shortest path from a source vertex to another. An other attribute of the alghoritm is it's capability to be able to detect whether a negative weight cycle exists within the graph.
 Like Dijkstra's algorithm, Bellman–Ford proceeds by relaxation, in which approximations to the correct distance are replaced by better ones until they eventually reach the solution. In both algorithms, the approximate distance to each vertex is always an overestimate of the true distance, and is replaced by the minimum of its old value and the length of a newly found path. However, Dijkstra's algorithm uses a priority queue to greedily select the closest vertex that has not yet been processed, and performs this relaxation process on all of its outgoing edges; by contrast, the Bellman–Ford algorithm simply relaxes all the edges, and does this |V|-1 times, where |V| is the number of vertices in the graph. In each of these repetitions, the number of vertices with correctly calculated distances grows, from which it follows that eventually all vertices will have their correct distances. This method allows the Bellman–Ford algorithm to be applied to a wider class of inputs than Dijkstra.
 
+#### Main differences between Dijkstra and Bellman-Ford
+1. Bellman time complexity is O(VE) and Dijkstra Algo has O(ElogV)in case of maxheap is used.
+2. Bellman does relaxation for n-1 times and Dijkstra Algo only 1 time.
+3. Bellman can handle negative weights but Dijkstra Algo can't.
+4. Bellman visit a vertex more then once but Dijkstra Algo only once.
+
 #### Pseudo code
 
 ![](/assets/pseudocode.png)
 
-// Run for each vertex in graph thus |V-1| iterations
+*Line 7* **Run for each vertex in graph thus |V-1| iterations**
 
-// Run for each Edge from vertex thus |V-1| * |E| 
+*Line 8* **Run for each Edge from vertex thus |V-1| * |E|**  *(removing constant time complexity = **O(|V|\*|E|)** )*
 
-// (removing constant time complexity = O(|V|*|E|) )
+*Line 10* **Relaxation function**
 
-// relax function
+*Line 14* **Check for negative cycle existance**
 
-The alghorithm is significantly slower than Dijkstra, but this is outweight by its capability to be able to process negative weights, which where Dijkstra lacks the ability.
+
+
+#### Time complexeties for Bellman Ford
+**The time complexity** for Bellman Ford is O(|V|*|E|), where V is the amount of vertices and E is the amount of Edges. For each possible destination vertex from the source, we will check all Edges to find the "cheapest" way to this vertex from the source.
+
+**The space complexity** for Bellman Ford is O(|V|). (maybe update?)
+
+The alghorithm is significantly slower than Dijkstra, but this is outweight by its capability to be able to process negative weights, which is where it is preffered over Dijkstra.
 
 #### Why can Dijkstra's alghorithm not handle negative numbers ?
 Dijkstra's algorithm is unable to handle negative cycles as it only vists every vertice once (only one iteration in Dijkstra). It is actually able to handle negative weights, however, it will not choose the shortest path in this case since it is a greedy algorithm.
@@ -36,10 +49,7 @@ Dijkstra's algorithm is unable to handle negative cycles as it only vists every 
 
 With Dijkstra, if we have to find the shortest path from A --> C, Dijkstra will be greedy and just choose the direct path from A -- C. Dijkstra is not meant to deal with negative weights, and does therfore not expect the path to be reduced because of negative weights.
 
-**The time complexity** for Bellman Ford is O(|V|*|E|), where V is the amount of vertices and E is the amount of Edges. For each possible destination vertex from the source, we will check all Edges to find the "cheapest" way to this vertex from the source.
-
-**The space complexity** for Bellman Ford is O(|V|). (maybe update?)
-
+#### Arbitrage detection
 We then found out, that to be able to detect arbitrage within data in a graph structure, one needs to be able to locate a *negative cycle* in the graph.
 
 If a graph contains a "negative cycle" (i.e. a cycle whose edges sum to a negative value) that is reachable from the source, then there is no cheapest path: any path that has a point on the negative cycle can be made cheaper by one more walk around the negative cycle. 
@@ -49,7 +59,7 @@ Example:
 
 ![Arbitrage](/assets/Arbitrage.PNG)
 
-This shows an arbitrage opportunity in a graph, and this is exactly what Bellman Ford detects, by finding the negative cycle. Here, the conversion rate between each currency has been converted to the negated natural logarithm **(*ln()*)** of the rates. 
+This shows an arbitrage opportunity in a graph, and this is exactly what Bellman Ford is able to detect, by finding a negative cycle. Here, the conversion rate between each currency has been converted to the negated natural logarithm **(*ln()*)** of the rates(weights). 
 
 ```
 int V = amountOfVertices;
@@ -64,17 +74,16 @@ int V = amountOfVertices;
             }
         }
 ```
+*Above illustrates how this is done in some pseudo code*
 
 This will result in a negative cycle that actually is profitable, as the numbers in original form are positive, but by harnessing the power of Bellman-Ford's ability to find negative cycles, we will be able to find them when the numbers are negated.
 
 
-<!-- Relaxation -->
-
-...
+## Application of the alghorithm 
 
 We wanted to see if we could find some real data, to see if the algorithmic logic was applicable to real life data. 
 
-We found some **crypto trading exchange data**, on [Binance](https://en.wikipedia.org/wiki/Binance), one of the largest cryptocurrency exchanges in the world. On here, we selected a quick snapshot of conversion data for the cryptocurrencies BTC (Bitcoin), LTC (Litecoin), ETH (Etherium) and BCH (Bitcoin Cash):
+We found some **Cryptocurrency trading exchange data**, on [Binance](https://en.wikipedia.org/wiki/Binance), one of the largest cryptocurrency exchanges in the world. On here, we selected a quick snapshot of conversion rates for the cryptocurrencies BTC (Bitcoin), LTC (Litecoin), ETH (Etherium) and BCH (Bitcoin Cash):
 
 **Dataset** (30-05-2020 snapshot)
 
@@ -85,8 +94,14 @@ We found some **crypto trading exchange data**, on [Binance](https://en.wikipedi
 | **ETH** |   0.025 |   5 |       1  |    0.975| 
 | **BCH** |   0.02562 |  5.125 |   1.025 |  1| 
 
-
 ---
+
+The above was our data, below in the upper part of the image, we see the negated natural logarithm applied to all the fields, and then we run the alghorithm to retrieve the results displayed in the bottom. This result tells us that in case we started up with 1000.00 BTC, and traded them to LTC then TO BCH and back to BTC, we would have profited around 1,8% each time. (YAY WE ARE RICH :D) This is true except that the exchanges do take some money to do the transfers and these are not present in our alghorithm. (so maybe not so profitable... :( ) 
+
+![](/assets/crypto.png)
+
+#### How do we get this result ?
+So as mentioned earlier, if we encountered a negative cycle, we would then recreate the cycle in a weighted digraph.
 
 <!-- Complexity
 Relaxation - "efter V-1 iterationer, kører den checket efter negative cycles igen. .. undersøg nærmere
