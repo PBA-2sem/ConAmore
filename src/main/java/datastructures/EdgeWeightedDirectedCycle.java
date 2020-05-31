@@ -19,9 +19,6 @@ public class EdgeWeightedDirectedCycle {
         // We get the graph from the findNegativeCycle method reversed so we know the cycle is present in the beginning here.
         for (int v = 0; v < G.V(); v++)
             if (!marked[v]) dfs(G, v);
-
-        // check that digraph has a cycle
-        assert check();
     }
 
     // check that algorithm computes either the topological order or finds a directed cycle
@@ -39,8 +36,8 @@ public class EdgeWeightedDirectedCycle {
             // found new vertex, so recur
             else if (!marked[w]) {
                 edgeTo[w] = e;
-                dfs(G, w);
-            }
+                dfs(G, w); 
+           }
 
             // trace back directed cycle
             else if (onStack[w]) {
@@ -77,35 +74,6 @@ public class EdgeWeightedDirectedCycle {
      */
     public Iterable<DirectedEdge> cycle() {
         return cycle;
-    }
-
-
-    // certify that digraph is either acyclic or has a directed cycle
-    private boolean check() {
-
-        // edge-weighted digraph is cyclic
-        if (hasCycle()) {
-            // verify cycle
-            DirectedEdge first = null, last = null;
-            for (DirectedEdge e : cycle()) {
-                if (first == null) first = e;
-                if (last != null) {
-                    if (last.to() != e.from()) {
-                        System.err.printf("cycle edges %s and %s not incident\n", last, e);
-                        return false;
-                    }
-                }
-                last = e;
-            }
-
-            if (last.to() != first.from()) {
-                System.err.printf("cycle edges %s and %s not incident\n", last, first);
-                return false;
-            }
-        }
-
-
-        return true;
     }
 
 }
