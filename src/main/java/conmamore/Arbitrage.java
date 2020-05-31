@@ -70,8 +70,6 @@ public class Arbitrage {
             System.out.print(name[v] +" ");
             for (int w = 0; w < V; w++) {
                 double rate = StdIn.readDouble();
-                System.out.println("RATE: " + rate);
-                System.out.println("LOG RATE: " + (-Math.log(rate)));
                 DirectedEdge e = new DirectedEdge(v, w, -Math.log(rate));
                 G.addEdge(e);
             }

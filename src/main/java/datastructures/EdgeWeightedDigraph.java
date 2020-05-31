@@ -1,7 +1,5 @@
 package datastructures;
 
-import datastructures.Bag;
-import datastructures.Stack;
 import utils.In;
 import java.util.NoSuchElementException;
 
