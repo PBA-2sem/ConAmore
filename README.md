@@ -39,7 +39,13 @@ Like Dijkstra's algorithm, Bellman–Ford proceeds by relaxation, in which appro
 #### Time complexeties for Bellman Ford
 **The time complexity** for Bellman Ford is O(|V|*|E|), where V is the amount of vertices and E is the amount of Edges. For each possible destination vertex from the source, we will check all Edges to find the "cheapest" way to this vertex from the source.
 
-**The space complexity** for Bellman Ford is O(|V|). (maybe update?)
+**Our modified implementation time** in our implementation the best case would be O(V \*(V + E)) 
+
+**The space complexity** for Bellman Ford is O(|V|).
+
+**Our modified space complexity**
+
+
 
 The alghorithm is significantly slower than Dijkstra, but this is outweight by its capability to be able to process negative weights, which is where it is preffered over Dijkstra.
 
