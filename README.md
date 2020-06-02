@@ -43,9 +43,7 @@ Like Dijkstra's algorithm, Bellman–Ford proceeds by relaxation, in which appro
 
 **The space complexity** for Bellman Ford is O(|V|).
 
-**Our modified space complexity**
-
-
+**Our modified space complexity** is O(|V|+|V|) as we need an extra graph for checking for the cycles upon occurance.
 
 The alghorithm is significantly slower than Dijkstra, but this is outweight by its capability to be able to process negative weights, which is where it is preffered over Dijkstra.
 
