@@ -6,7 +6,8 @@ We were interested in trying to apply our knowledge about the topic shortest pat
 
 There are many shortest path algorithms, and we wanted to learn about one we didnt know about already. Our investigation lead us to find the [Bellman Ford algorithm](https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm), an algorithm similar to Dijkstras algortihm, but is able to handle graphs in which some of the edge weights are negative numbers, and ability to detect negative cycles(described "Bellman Ford" section).
 
-We chose to look at applications of this alghorithm, in real life scenarios, as why would a negative cycle be usefull or unwanted in a graph. (ADD REFRENCE TO OTHER STUFF) 
+We chose to look at applications of this alghorithm, in real life scenarios, as why would a negative cycle be usefull or unwanted in a graph.
+This could be used in cashflows, or in biological reaction graphs, as some for example some reactions could be able to return heat instead of obsorbing it.
 
 Looking around we have found an interesting application, of the alghoritm in a atypic way. The usage was to be able to detect an We found out that this is quite useful to use in a scenario were you want to detect an [Arbitrage](https://en.wikipedia.org/wiki/Arbitrage) in a weighted digraph, which in short terms means, that you could find profitable trades in cross trading valuables such as Currency.
 
@@ -16,7 +17,7 @@ Bellman-Ford is a graph algorithm that similary to Djikstra can be used to find 
 Like Dijkstra's algorithm, Bellman–Ford proceeds by relaxation, in which approximations to the correct distance are replaced by better ones until they eventually reach the solution. In both algorithms, the approximate distance to each vertex is always an overestimate of the true distance, and is replaced by the minimum of its old value and the length of a newly found path. However, Dijkstra's algorithm uses a priority queue to greedily select the closest vertex that has not yet been processed, and performs this relaxation process on all of its outgoing edges; by contrast, the Bellman–Ford algorithm simply relaxes all the edges, and does this |V|-1 times, where |V| is the number of vertices in the graph. In each of these repetitions, the number of vertices with correctly calculated distances grows, from which it follows that eventually all vertices will have their correct distances. This method allows the Bellman–Ford algorithm to be applied to a wider class of inputs than Dijkstra.
 
 #### Main differences between Dijkstra and Bellman-Ford
-1. Bellman time complexity is O(VE) and Dijkstra Algo has O(ElogV)in case of maxheap is used.
+1. Bellman worst time complexity is O(VE), best case for Bellman-ford O(E) and Dijkstra Algo has O(E*log(V))in case of maxheap is used.
 2. Bellman does relaxation for n-1 times and Dijkstra Algo only 1 time.
 3. Bellman can handle negative weights but Dijkstra Algo can't.
 4. Bellman visit a vertex more then once but Dijkstra Algo only once.
